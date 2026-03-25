@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  miner:
+    build:
+      context: ./miner
+    container_name: miner_service
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  visualizer:
+    build:
+      context: ./visualizer
+    container_name: visualizer_service
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - miner
+    restart: unless-stopped
+
+volumes:
+  data:
